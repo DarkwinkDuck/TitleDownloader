@@ -73,7 +73,7 @@ const runScriptHandler = async () => {
         alert('pognali!' + '"' + `${fileNameByUrl}` + '"' + id);
         chrome.scripting.executeScript({
           target: { tabId: id },
-          files: ['Global(local)script.js', fileNameByUrl],
+          files: ['Global(local)script.js'],
         });
       }, innerIntervalCD);
     });

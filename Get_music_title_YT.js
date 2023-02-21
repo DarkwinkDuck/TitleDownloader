@@ -48,21 +48,13 @@ function downloadTitle(text, fileName) { // Скачивание файла
 };
 
 function mainPageFixYT() { // Проверка на главную страницу
-  if (LocalPars.titleNext[1] === ' ') {
-    return true
-  } else {
-    return false
-  }
+  return (LocalPars.titleNext[1] === ' ') 
 };
 
 function fullScreenFix() { // Проверка на полноэкранный режим
   LocalPars.fullScreenBtnNext = document.querySelector('.ytp-fullscreen-button.ytp-button').title;
   UnificeBotton();
-  if (LocalPars.fullScreenBtnNext === 'FullScreen') {
-    return true
-  } else {
-    return false
-  }
+  return (LocalPars.fullScreenBtnNext === 'FullScreen') 
 };
 
 function getPlayBtnYT() { // Получение доступа к кнопке воспроизведения

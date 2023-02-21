@@ -64,7 +64,6 @@ function writingTitleVK() { // Перезапись названия с учёт
 };
 
 async function getMusicTitleVK() { // Скачивание последующее
-  alert(1);
   LocalPars.playBtnNext = getPlayBtnVK().innerText;
   UnificeBotton();
   LocalPars.titleNext = writingTitleVK();

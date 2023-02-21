@@ -23,26 +23,33 @@ const setInitialStorageState = async () =>
         chrome.storage.session.set({ outerStop: 0 }),
         chrome.storage.session.set({ innerStop: 0 }),
     ]);
+
 const innerIntervalCD = 3000;
+
 setInitialStorageState();
+
 const outerScript = setInterval(async () => {
+
     console.log(1);
+
     let audibleTabList = [];
 
-    await chrome.runtime.sendMessage(
-        "Tabs?", function (response) {
-            console.log(response);
-        }
-    );      
-
+    const port = await chrome.runtime.connect({});
+    await port.postMessage('Tabs');
+    await port.onMessage.addListener(async function (message, sender) {
+        console.log(message);
+    });
     let a;
     audibleTabList = await getArrayFromBG(a);
+
     console.log(audibleTabList);
+
     audibleTabList.forEach(async ({ url, id }) => {
         let a;
         const tabs = await getArrayFromStorage(a);
         console.log(tabs);
         const fileNameByUrl = getFileName(url);
+
         if (tabs.includes(id) || !fileNameByUrl) return;
         setArrayInStorage([...tabs, id]);
 
@@ -52,9 +59,9 @@ const outerScript = setInterval(async () => {
 
         setTimeout(async () => {
             alert('pognali!' + '"' + `${fileNameByUrl}` + '"' + id);
-            await chrome.scripting.executeScript({
-                target: { tabId: id },
-                files: ['Global(local)script.js'],
+            await port.postMessage({ExecutedFile: fileNameByUrl, TabID: id});
+            await port.onMessage.addListener(async function (message, sender) {
+                console.log(message);
             });
             clearInterval(outerScript);
             console.log('zalupa1!');
@@ -62,13 +69,12 @@ const outerScript = setInterval(async () => {
     });
 
     const { outerStop } = await chrome.storage.session.get("outerStop");
-    
+
     if (Number(outerStop) >= 1) {
         console.log('zalupa2!');
         clearInterval(outerScript);
     }
 }, innerIntervalCD);
-
 
 
 
