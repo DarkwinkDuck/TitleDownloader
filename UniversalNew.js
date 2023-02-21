@@ -38,6 +38,7 @@ const setInitialStorageState = async () =>
     chrome.storage.session.set({ outerStop: 0 }),
     chrome.storage.session.set({ innerStop: 0 }),
     chrome.storage.session.set({ usedTabs: [] }),
+    chrome.storage.session.set({ actualTabs: [] }),
   ]);
 const innerIntervalCD = 3000;
 
@@ -70,10 +71,9 @@ const runScriptHandler = async () => {
         chrome.storage.session.set({ outerStop: 2 }),
       ])
       setTimeout(() => {
-        alert('pognali!' + '"' + `${fileNameByUrl}` + '"' + id);
         chrome.scripting.executeScript({
           target: { tabId: id },
-          files: ['Global(local)script.js'],
+          files: ['Global(local)script.js', fileNameByUrl],
         });
       }, innerIntervalCD);
     });

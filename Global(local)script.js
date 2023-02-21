@@ -58,7 +58,6 @@ const outerScript = setInterval(async () => {
         }, 1);
 
         setTimeout(async () => {
-            alert('pognali!' + '"' + `${fileNameByUrl}` + '"' + id);
             await port.postMessage({ExecutedFile: fileNameByUrl, TabID: id});
             await port.onMessage.addListener(async function (message, sender) {
                 console.log(message);
