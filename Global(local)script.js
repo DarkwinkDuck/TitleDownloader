@@ -22,18 +22,19 @@ const setInitialStorageState = async () =>
     Promise.all([
         chrome.storage.session.set({ outerStop: 0 }),
         chrome.storage.session.set({ innerStop: 0 }),
-        chrome.storage.session.set({ antiDodikProtection: 1 }),
-        chrome.storage.session.set({ usedTabs: [1, 2] }),
     ]);
 const innerIntervalCD = 3000;
-
+setInitialStorageState();
 const outerScript = setInterval(async () => {
     console.log(1);
-    await setInitialStorageState();
     let audibleTabList = [];
+
     await chrome.runtime.sendMessage(
-        "Tabs?",
+        "Tabs?", function (response) {
+            console.log(response);
+        }
     );      
+
     let a;
     audibleTabList = await getArrayFromBG(a);
     console.log(audibleTabList);
@@ -56,12 +57,17 @@ const outerScript = setInterval(async () => {
                 files: ['Global(local)script.js'],
             });
             clearInterval(outerScript);
+            console.log('zalupa1!');
         }, innerIntervalCD);
     });
 
     const { outerStop } = await chrome.storage.session.get("outerStop");
-    if (Number(outerStop) >= 1) clearInterval(outerScript);
-}, 10000);
+    
+    if (Number(outerStop) >= 1) {
+        console.log('zalupa2!');
+        clearInterval(outerScript);
+    }
+}, innerIntervalCD);
 
 
 

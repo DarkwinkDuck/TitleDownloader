@@ -37,6 +37,7 @@ const setInitialStorageState = async () =>
   Promise.all([
     chrome.storage.session.set({ outerStop: 0 }),
     chrome.storage.session.set({ innerStop: 0 }),
+    chrome.storage.session.set({ usedTabs: [] }),
   ]);
 const innerIntervalCD = 3000;
 
@@ -55,7 +56,7 @@ const runScriptHandler = async () => {
       const tabs = await getArrayFromStorage(a);
       const fileNameByUrl = getFileName(url);
       if (tabs.includes(id) || !fileNameByUrl) return;
-      if (!tabs) {
+      if ( tabs.length === 0 ) {
         const usedTabsId = [];
         usedTabsId.push(id);
         setArrayInStorage(usedTabsId);
@@ -63,17 +64,16 @@ const runScriptHandler = async () => {
         tabs.push(id)
         setArrayInStorage(tabs);
       }
-      chrome.storage.session.set({ antiDodikProtection: 1 });
-      setTimeout(() => {
-        chrome.storage.session.set({ innerStop: 2 });
-        chrome.storage.session.set({ outerStop: 2 });
-      }, 1);
-
+      Promise.all([
+        chrome.storage.session.set({ antiDodikProtection: 1 }),
+        chrome.storage.session.set({ innerStop: 2 }),
+        chrome.storage.session.set({ outerStop: 2 }),
+      ])
       setTimeout(() => {
         alert('pognali!' + '"' + `${fileNameByUrl}` + '"' + id);
         chrome.scripting.executeScript({
           target: { tabId: id },
-          files: ['Global(local)script.js'],
+          files: ['Global(local)script.js', fileNameByUrl],
         });
       }, innerIntervalCD);
     });

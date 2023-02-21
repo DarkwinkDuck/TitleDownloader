@@ -2,7 +2,7 @@ chrome.downloads.onDeterminingFilename.addListener(function (item, suggest) {
 	suggest({ filename: '..', conflictAction: 'overwrite' });
 });
 const setArrayInStorage = async (tabs) => {
-	chrome.storage.session.set({ actualTabs: tabs });
+	await chrome.storage.session.set({ actualTabs: tabs });
   }
 
 chrome.runtime.onMessage.addListener(
@@ -14,4 +14,4 @@ chrome.runtime.onMessage.addListener(
 	}
 );   
 	
-    
+  
