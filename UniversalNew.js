@@ -3,11 +3,11 @@ let clearAll = document.getElementById("ClearFiles");
 let stopScript = document.getElementById("stopScript");
 
 const getArrayFromStorage = async (a) => {
-  await chrome.storage.session.get("usedTabs").then((result) => { a = result.usedTabs });
+  await chrome.storage.local.get("usedTabs").then((result) => { a = result.usedTabs });
   return a
 }
 const setArrayInStorage = (tabs) => {
-  chrome.storage.session.set({ usedTabs: tabs });
+  chrome.storage.local.set({ usedTabs: tabs });
 }
 const downloadTitle = (text, fileName) => {
   const element = document.createElement("a");
@@ -21,29 +21,29 @@ const downloadTitle = (text, fileName) => {
 };
 
 const getMusicEmpty = () => {
-  chrome.storage.session.set({ titleCurrent: "" });
+  chrome.storage.local.set({ titleCurrent: "" });
   downloadTitle("", "HeaderCurrent.txt");
   downloadTitle("", "TrackCurrent.txt");
 };
 
 const getFileName = (url) => {
-  if (url.includes("music.yandex")) return "Get_music_title_YM.js";
-  else if (url.includes("vk.com")) return "Get_music_title_VK.js";
+  if (url.includes("vk.com")) return "Get_music_title_VK.js";
+  else if (url.includes("music.yandex")) return "Get_music_title_YM.js";
   else if (url.includes("youtube.com")) return "Get_music_title_YT.js";
   else return "";
 };
 
 const setInitialStorageState = async () =>
   Promise.all([
-    chrome.storage.session.set({ outerStop: 0 }),
-    chrome.storage.session.set({ innerStop: 0 }),
-    chrome.storage.session.set({ usedTabs: [] }),
-    chrome.storage.session.set({ actualTabs: [] }),
+    chrome.storage.local.set({ outerStop: 0 }),
+    chrome.storage.local.set({ innerStop: 0 }),
+    chrome.storage.local.set({ usedTabs: [] }),
+    chrome.storage.local.set({ actualTabs: [] }),
   ]);
-const innerIntervalCD = 3000;
+const innerIntervalCD = 1000;
 
 const runScriptHandler = async () => {
-  const { antiDodikProtection } = await chrome.storage.session.get(
+  const { antiDodikProtection } = await chrome.storage.local.get(
     "antiDodikProtection"
   );
   if (antiDodikProtection) return;
@@ -66,9 +66,9 @@ const runScriptHandler = async () => {
         setArrayInStorage(tabs);
       }
       Promise.all([
-        chrome.storage.session.set({ antiDodikProtection: 1 }),
-        chrome.storage.session.set({ innerStop: 2 }),
-        chrome.storage.session.set({ outerStop: 2 }),
+        chrome.storage.local.set({ antiDodikProtection: 1 }),
+        chrome.storage.local.set({ innerStop: 2 }),
+        chrome.storage.local.set({ outerStop: 2 }),
       ])
       setTimeout(() => {
         chrome.scripting.executeScript({
@@ -83,11 +83,11 @@ const runScriptHandler = async () => {
 
 const stopScriptHandler = () => {
   Promise.all([
-    chrome.storage.session.set({ innerStop: 2 }),
-    chrome.storage.session.set({ outerStop: 2 }),
+    chrome.storage.local.set({ innerStop: 2 }),
+    chrome.storage.local.set({ outerStop: 2 }),
   ]);
   setTimeout(() => {
-    chrome.storage.session.clear();
+    chrome.storage.local.clear();
   }, innerIntervalCD);
 };
 

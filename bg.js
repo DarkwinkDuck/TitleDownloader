@@ -9,7 +9,7 @@ chrome.runtime.onConnect.addListener(
 			if (message === 'Tabs') {
 				let audibleTabList = [];
 				audibleTabList.push(...await chrome.tabs.query({ audible: true }));
-				await chrome.storage.session.set({ actualTabs: audibleTabList });
+				await chrome.storage.local.set({ actualTabs: audibleTabList });
 				await sender.postMessage('TabsDone');
 			} else if (message.ExecutedFile) {
 				await chrome.scripting.executeScript({

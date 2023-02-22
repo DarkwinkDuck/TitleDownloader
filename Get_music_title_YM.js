@@ -11,10 +11,10 @@ let LocalPars = {
   txtPauseCurrent: 'Последний трек: ', // Плашка при паузе
   txtStopCurrent: '', // Плашка при длительной паузе
   titleStopCurrent: '', // Название трека при длительной паузе
-  stop: 3, // Время паузы, после которой всё обнуляется (в секундах)
+  stop: 10, // Время паузы, после которой всё обнуляется (в секундах)
 }
-setTimeout(() => chrome.storage.session.set({ innerStop: 0 }), 1);
-chrome.storage.session.set({ titleCurrent: "" });
+setTimeout(() => chrome.storage.local.set({ innerStop: 0 }), 1);
+chrome.storage.local.set({ titleCurrent: "" });
 
 function UnificeBotton() { // Приведение значения кнопки воспроизведения к универсальному
   switch (LocalPars.playBtnNext) {
@@ -30,7 +30,7 @@ function UnificeBotton() { // Приведение значения кнопки
 
 function downloadTitle(text, fileName) { // Скачивание файла
   const element = document.createElement('a');
-  element.setAttribute('href', 'data:text/text;charset=utf-8,' + encodeURI(text));
+  element.setAttribute('href', 'data:text/text;charset=utf-8,' + encodeURI(text + "   "));
   element.setAttribute('download', fileName);
   element.click();
   delete element;
@@ -53,11 +53,11 @@ async function getMusicTitleYM() { // Скачивание последующе�
   UnificeBotton();
   LocalPars.titleNext = writingTitleYM();
   if (LocalPars.playBtnNext === 'Play') {
-    const { titleCurrent } = await chrome.storage.session.get('titleCurrent');
+    const { titleCurrent } = await chrome.storage.local.get('titleCurrent');
     if (LocalPars.titleNext !== titleCurrent) { // При переключении трека
       downloadTitle(LocalPars.txtCurrentPlay, LocalPars.HeaderCurrent);
       downloadTitle(LocalPars.titleNext, LocalPars.TrackCurrent);
-      await chrome.storage.session.set({ titleCurrent: LocalPars.titleNext });
+      await chrome.storage.local.set({ titleCurrent: LocalPars.titleNext });
     } else if (LocalPars.playBtnNext !== LocalPars.playBtnCurrent) { // При нажатии на кнопку воспроизведения
       downloadTitle(LocalPars.txtCurrentPlay, LocalPars.HeaderCurrent);
       if (LocalPars.stopTimer >= LocalPars.stop) {
@@ -79,7 +79,7 @@ async function getMusicTitleYM() { // Скачивание последующе�
       LocalPars.stopTimer++;
     }
   };
-  const { innerStop } = await chrome.storage.session.get("innerStop");
+  const { innerStop } = await chrome.storage.local.get("innerStop");
   if (innerStop) { // Выключение скрипта
     if (LocalPars.playBtnNext === 'Play') { // Остановка воспроизведения
       let playBtn = getPlayBtnYM();

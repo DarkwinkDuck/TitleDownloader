@@ -1,30 +1,30 @@
 const getArrayFromStorage = async (a) => {
-    await chrome.storage.session.get("usedTabs").then((result) => { a = result.usedTabs });
+    await chrome.storage.local.get("usedTabs").then((result) => { a = result.usedTabs });
     return a
 }
 
 const getArrayFromBG = async (a) => {
-    await chrome.storage.session.get("actualTabs").then((result) => { a = result.actualTabs });
+    await chrome.storage.local.get("actualTabs").then((result) => { a = result.actualTabs });
     return a
 }
 const setArrayInStorage = (tabs) => {
-    chrome.storage.session.set({ usedTabs: tabs });
+    chrome.storage.local.set({ usedTabs: tabs });
 }
 
 const getFileName = (url) => {
-    if (url.includes("music.yandex")) return "Get_music_title_YM.js";
-    else if (url.includes("vk.com")) return "Get_music_title_VK.js";
+    if (url.includes("vk.com")) return "Get_music_title_VK.js";
+    else if (url.includes("music.yandex")) return "Get_music_title_YM.js";
     else if (url.includes("youtube.com")) return "Get_music_title_YT.js";
     else return "";
 };
 
 const setInitialStorageState = async () =>
     Promise.all([
-        chrome.storage.session.set({ outerStop: 0 }),
-        chrome.storage.session.set({ innerStop: 0 }),
+        chrome.storage.local.set({ outerStop: 0 }),
+        chrome.storage.local.set({ innerStop: 0 }),
     ]);
 
-const innerIntervalCD = 3000;
+const innerIntervalCD = 1000;
 
 setInitialStorageState();
 
@@ -54,7 +54,7 @@ const outerScript = setInterval(async () => {
         setArrayInStorage([...tabs, id]);
 
         setTimeout(() => {
-            chrome.storage.session.set({ innerStop: 2 });
+            chrome.storage.local.set({ innerStop: 2 });
         }, 1);
 
         setTimeout(async () => {
@@ -67,7 +67,7 @@ const outerScript = setInterval(async () => {
         }, innerIntervalCD);
     });
 
-    const { outerStop } = await chrome.storage.session.get("outerStop");
+    const { outerStop } = await chrome.storage.local.get("outerStop");
 
     if (Number(outerStop) >= 1) {
         console.log('zalupa2!');

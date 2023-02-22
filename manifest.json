@@ -1,7 +1,7 @@
 {
   "name": "Title Downloader",
   "description": "Скачивание названия текущей и предыдущей песни в текстовый файл для отображения в OBS",
-  "version": "5.002",
+  "version": "5.6",
   "manifest_version": 3,
 
   "permissions": ["activeTab", "scripting", "downloads", "tabs", "storage"],
@@ -9,25 +9,25 @@
   "host_permissions": [
     "*://vk.com/*",
     "*://music.yandex.ru/*",
-    "*://www.youtube.com/*",
-    "*://music.yandex.com/*"
+    "*://music.yandex.com/*",
+    "*://www.youtube.com/*"
   ],
 
   "action": {
     "default_popup": "popup.html",
     "default_icon": {
-      "16": "/images/get_started16.png",
-      "32": "/images/get_started32.png",
-      "48": "/images/get_started48.png",
-      "128": "/images/get_started128.png"
+      "16": "/images/16.png",
+      "32": "/images/32.png",
+      "48": "/images/48.png",
+      "128": "/images/128.png"
     }
   },
 
   "icons": {
-    "16": "/images/get_started16.png",
-    "32": "/images/get_started32.png",
-    "48": "/images/get_started48.png",
-    "128": "/images/get_started128.png"
+    "16": "/images/16.png",
+    "32": "/images/32.png",
+    "48": "/images/48.png",
+    "128": "/images/128.png"
   },
 
   "background": {
