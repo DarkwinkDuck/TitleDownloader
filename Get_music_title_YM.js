@@ -57,7 +57,7 @@ async function getMusicTitleYM() { // Скачивание последующе�
     if (LocalPars.titleNext !== titleCurrent) { // При переключении трека
       downloadTitle(LocalPars.txtCurrentPlay, LocalPars.HeaderCurrent);
       downloadTitle(LocalPars.titleNext, LocalPars.TrackCurrent);
-      await chrome.storage.session.set({ titleCurrent: LocalPars.LocalPars.titleNext });
+      await chrome.storage.session.set({ titleCurrent: LocalPars.titleNext });
     } else if (LocalPars.playBtnNext !== LocalPars.playBtnCurrent) { // При нажатии на кнопку воспроизведения
       downloadTitle(LocalPars.txtCurrentPlay, LocalPars.HeaderCurrent);
       if (LocalPars.stopTimer >= LocalPars.stop) {

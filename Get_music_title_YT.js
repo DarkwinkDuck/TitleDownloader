@@ -11,6 +11,8 @@ let LocalPars = {
   txtPauseCurrent: 'Последний трек: ', // Плашка при паузе
   txtStopCurrent: '', // Плашка при длительной паузе
   titleStopCurrent: '', // Название трека при длительной паузе
+  txtFullScreen: '',
+  titleFullScreen: '',
   stop: 3, // Время паузы, после которой всё обнуляется (в секундах)
   fullScreenBtnNext: '',
   fullScreenBtnCurrent: '',
@@ -70,8 +72,8 @@ function writingTitleYT() { // Перезапись названия
 async function getMusicTitleYT() { // Скачивание последующее
   if (fullScreenFix()) {
     if (LocalPars.fullScreenBtnNext !== LocalPars.fullScreenBtnCurrent) { // Исправление работы при полноэкранном режиме
-      LocalPars.titleNext = titleFullScreen;
-      downloadTitle(txtFullScreen, LocalPars.HeaderCurrent);
+      LocalPars.titleNext = LocalPars.titleFullScreen;
+      downloadTitle(LocalPars.txtFullScreen, LocalPars.HeaderCurrent);
       downloadTitle(LocalPars.titleNext, LocalPars.TrackCurrent);
       LocalPars.fullScreenBtnCurrent = LocalPars.fullScreenBtnNext;
     }
