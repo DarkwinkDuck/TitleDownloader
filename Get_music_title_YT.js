@@ -84,10 +84,23 @@ async function getMusicTitleYT() { // Скачивание последующе�
     LocalPars.titleNext = writingTitleYT();
     if (LocalPars.playBtnNext === 'Play') {
       if (!mainPageFixYT()) { // Для страницы воспроизведения
+<<<<<<< HEAD
         if (LocalPars.titleNext !== titleCurrent) { // При переключении трека и нажатии на кнопку воспроизведения
           downloadTitle(LocalPars.txtCurrentPlay, LocalPars.HeaderCurrent);
           downloadTitle(LocalPars.titleNext, LocalPars.TrackCurrent);
           await chrome.storage.local.set({ titleCurrent: LocalPars.titleNext });
+=======
+        const { titleCurrent } = await chrome.storage.local.get('titleCurrent');
+        if (LocalPars.titleNext !== titleCurrent) { // При переключении трека
+          downloadTitle(LocalPars.txtCurrentPlay, LocalPars.HeaderCurrent);
+          downloadTitle(LocalPars.titleNext, LocalPars.TrackCurrent);
+          await chrome.storage.local.set({ titleCurrent: LocalPars.titleNext });
+        } else if (LocalPars.playBtnNext !== LocalPars.playBtnCurrent) { // При нажатии на кнопку воспроизведения
+          downloadTitle(LocalPars.txtCurrentPlay, LocalPars.HeaderCurrent);
+          if (LocalPars.stopTimer >= LocalPars.stop) {
+            downloadTitle(LocalPars.titleNext, LocalPars.TrackCurrent);
+          }
+>>>>>>> 77491532ffabd01fce01ab84467d8557ecc40f27
         };
         LocalPars.playBtnCurrent = LocalPars.playBtnNext;
       }

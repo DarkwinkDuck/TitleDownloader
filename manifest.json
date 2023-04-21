@@ -1,7 +1,11 @@
 {
   "name": "Title Downloader",
   "description": "Скачивание названия текущей и предыдущей песни в текстовый файл для отображения в OBS",
+<<<<<<< HEAD
   "version": "5.7",
+=======
+  "version": "5.6",
+>>>>>>> 77491532ffabd01fce01ab84467d8557ecc40f27
   "manifest_version": 3,
 
   "permissions": ["activeTab", "scripting", "downloads", "tabs", "storage"],

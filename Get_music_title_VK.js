@@ -70,7 +70,16 @@ async function getMusicTitleVK() { // Скачивание последующе�
   LocalPars.titleNext = writingTitleVK();
   accessBugFixVK();
   if (LocalPars.playBtnNext === 'Play') {
+<<<<<<< HEAD
     if (LocalPars.titleNext !== titleCurrent) { // При переключении трека и нажатии на кнопку воспроизведения
+=======
+    const {titleCurrent} = await chrome.storage.local.get('titleCurrent');
+    if (LocalPars.titleNext !== titleCurrent) { // При переключении трека
+        downloadTitle(LocalPars.txtCurrentPlay, LocalPars.HeaderCurrent);
+        downloadTitle(LocalPars.titleNext, LocalPars.TrackCurrent);
+        await chrome.storage.local.set({titleCurrent: LocalPars.titleNext});
+    } else if (LocalPars.playBtnNext !== LocalPars.playBtnCurrent) { // При нажатии на кнопку воспроизведения
+>>>>>>> 77491532ffabd01fce01ab84467d8557ecc40f27
       downloadTitle(LocalPars.txtCurrentPlay, LocalPars.HeaderCurrent);
       downloadTitle(LocalPars.titleNext, LocalPars.TrackCurrent);
       await chrome.storage.local.set({ titleCurrent: LocalPars.titleNext });
@@ -80,6 +89,7 @@ async function getMusicTitleVK() { // Скачивание последующе�
     downloadTitle(LocalPars.txtPauseCurrent, LocalPars.HeaderCurrent);
     LocalPars.playBtnCurrent = LocalPars.playBtnNext;
     LocalPars.stopTimer = 0;
+<<<<<<< HEAD
     await chrome.storage.local.set({ titleCurrent: '' });
   } else {
     if (LocalPars.stopTimer === LocalPars.stop) { // При длительной паузе (равной stop)
@@ -91,6 +101,18 @@ async function getMusicTitleVK() { // Скачивание последующе�
     }
   };
   const { innerStop } = await chrome.storage.local.get("innerStop");
+=======
+    } else {
+      if (LocalPars.stopTimer === stop) { // При длительной паузе (равной stop)
+        downloadTitle(LocalPars.txtStopCurrent, LocalPars.HeaderCurrent);
+        downloadTitle(LocalPars.titleStopCurrent, LocalPars.TrackCurrent);
+      }
+      if (LocalPars.stopTimer <= stop) {
+        LocalPars.stopTimer++;
+      }
+    };
+    const { innerStop } = await chrome.storage.local.get("innerStop");
+>>>>>>> 77491532ffabd01fce01ab84467d8557ecc40f27
   if (innerStop) { // Выключение скрипта
     if (LocalPars.playBtnNext === 'Play') { // Остановка воспроизведения
       let playBtn = getPlayBtnVK();
